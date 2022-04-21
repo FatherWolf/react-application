@@ -7,15 +7,17 @@ import reducers from './reducers';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import rootSaga from './sagas'
+import rootSaga from './sagas';
 
 axios.defaults.withCredentials = true;
 axios.default.baseURL = 'http://rem-rest-api.herokuapp.com/api/users'
 
 const sagaMiddleware = createSagaMiddleware();
 
-//axios.get('/users');
-const store = createStore(reducers, applyMiddleware(createSagaMiddleware));
+const enhancer = applyMiddleware(sagaMiddleware);
+
+const store = createStore(reducers, enhancer);
+
 
 sagaMiddleware.run(rootSaga);
 
